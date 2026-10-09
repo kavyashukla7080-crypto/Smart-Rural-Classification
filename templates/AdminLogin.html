@@ -1,0 +1,219 @@
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Admin Login - Smart Rural Classification{% endblock %}
+{% block admin_login %}active{% endblock %}
+
+{% block content %}
+
+<style>
+
+section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 85vh;
+}
+
+.glass-box {
+  width: 100%;
+  max-width: 420px;
+  padding: 45px;
+
+  background: rgba(0, 0, 0, 0.78);
+  border-radius: 20px;
+
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5);
+  animation: fadeInUp 0.5s ease-out;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.form-icon {
+  text-align: center;
+  font-size: 45px;
+  margin-bottom: 10px;
+}
+
+.glass-box h2 {
+  text-align: center;
+  color: #fff;
+  margin-bottom: 8px;
+  font-size: 26px;
+  font-weight: 700;
+}
+
+.glass-box .subtitle {
+  text-align: center;
+  color: rgba(255,255,255,0.6);
+  margin-bottom: 28px;
+  font-size: 14px;
+}
+
+.form-group {
+  margin-bottom: 18px;
+}
+
+.form-group label {
+  display: block;
+  color: rgba(255,255,255,0.7);
+  font-size: 13px;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 13px 16px;
+
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  outline: none;
+
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  font-size: 15px;
+  font-family: 'Poppins', sans-serif;
+  transition: all 0.3s ease;
+}
+
+.form-group input::placeholder {
+  color: rgba(255,255,255,0.4);
+}
+
+.form-group input:focus {
+  border-color: #00c6ff;
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 0 15px rgba(0,198,255,0.15);
+}
+
+.btn-group {
+  display: flex;
+  gap: 12px;
+  margin-top: 5px;
+}
+
+.btn-login {
+  flex: 1;
+  padding: 12px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 15px;
+  font-family: 'Poppins', sans-serif;
+  transition: all .3s ease;
+  color: #fff;
+  background: linear-gradient(135deg, #007bff, #00c6ff);
+  box-shadow: 0 4px 15px rgba(0,123,255,0.3);
+}
+
+.btn-login:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0,123,255,0.4);
+}
+
+.btn-reset {
+  flex: 1;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(220,53,69,0.5);
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 15px;
+  font-family: 'Poppins', sans-serif;
+  transition: all .3s ease;
+  color: #ff6b6b;
+  background: transparent;
+}
+
+.btn-reset:hover {
+  background: rgba(220,53,69,0.15);
+  border-color: #dc3545;
+}
+
+.message-box {
+  text-align: center;
+  color: #fff;
+  background: rgba(220, 53, 69, 0.3);
+  padding: 10px 15px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  border-left: 3px solid #dc3545;
+  font-size: 14px;
+}
+
+.small-text {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 13px;
+  color: rgba(255,255,255,0.5);
+}
+
+.small-text a {
+  color: #00c6ff;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.small-text a:hover {
+  text-decoration: underline;
+}
+
+@media(max-width:480px){
+  .glass-box {
+    padding: 30px 22px;
+  }
+}
+
+</style>
+
+<section>
+  <div class="glass-box">
+
+    <div class="form-icon">🔐</div>
+    <h2>Admin Login</h2>
+    <p class="subtitle">Access the admin control panel</p>
+
+    {% if messages %}
+      {% for message in messages %}
+        <div class="message-box">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+
+    <form action="{% url 'AdminLoginCheck' %}" method="POST" autocomplete="off">
+      {% csrf_token %}
+
+      <div class="form-group">
+        <label>Admin ID</label>
+        <input type="text" name="loginid" placeholder="Enter your Admin ID" required>
+      </div>
+
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" name="pswd" placeholder="Enter your password" required>
+      </div>
+
+      <div class="btn-group">
+        <button type="submit" class="btn-login">Login</button>
+        <button type="reset" class="btn-reset">Reset</button>
+      </div>
+
+      <p class="small-text">
+        Only authorized personnel can access this portal.
+      </p>
+
+    </form>
+
+  </div>
+</section>
+
+{% endblock %}

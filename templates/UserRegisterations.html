@@ -1,0 +1,417 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}User Registration - Smart Rural Classification{% endblock %}
+{% block register_active %}active{% endblock %}
+
+{% block content %}
+
+<style>
+
+.register-section{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:88vh;
+    padding:30px 15px;
+}
+
+.form-box{
+    width:100%;
+    max-width:680px;
+    padding:40px;
+    background:rgba(0,0,0,0.82);
+    backdrop-filter:blur(25px);
+    -webkit-backdrop-filter:blur(25px);
+    border:1px solid rgba(255,255,255,0.14);
+    border-radius:24px;
+    box-shadow:0 20px 60px rgba(0,0,0,0.55);
+    animation:fadeInUp 0.5s ease-out;
+}
+
+@keyframes fadeInUp{
+    from{ opacity:0; transform:translateY(25px); }
+    to{ opacity:1; transform:translateY(0); }
+}
+
+/* Switch Tabs (Login / Register) */
+.auth-switch{
+    display:flex;
+    background:rgba(255,255,255,0.06);
+    padding:5px;
+    border-radius:14px;
+    border:1px solid rgba(255,255,255,0.1);
+    margin-bottom:28px;
+    gap:6px;
+}
+
+.switch-btn{
+    flex:1;
+    text-align:center;
+    padding:11px 16px;
+    border-radius:10px;
+    text-decoration:none;
+    font-size:14px;
+    font-weight:600;
+    color:rgba(255,255,255,0.7);
+    transition:all 0.3s ease;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+}
+
+.switch-btn:hover{
+    color:#fff;
+    background:rgba(255,255,255,0.08);
+}
+
+.switch-btn.active{
+    background:linear-gradient(135deg, #007bff, #00c6ff);
+    color:#fff;
+    box-shadow:0 4px 15px rgba(0,123,255,0.35);
+}
+
+.form-header{
+    text-align:center;
+    margin-bottom:25px;
+}
+
+.form-icon{
+    font-size:42px;
+    margin-bottom:8px;
+}
+
+.form-box h2{
+    color:#fff;
+    font-size:26px;
+    font-weight:700;
+    margin-bottom:6px;
+    letter-spacing:0.5px;
+}
+
+.form-box .subtitle{
+    color:rgba(255,255,255,0.6);
+    font-size:14px;
+}
+
+/* 2-Column Responsive Grid */
+.form-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:16px 20px;
+    margin-bottom:20px;
+}
+
+.form-grid .full-width{
+    grid-column:1 / -1;
+}
+
+.input-box{
+    display:flex;
+    flex-direction:column;
+}
+
+.input-box label{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    color:rgba(255,255,255,0.85);
+    font-size:13px;
+    font-weight:500;
+    margin-bottom:6px;
+}
+
+.input-box label span{
+    color:#00c6ff;
+    font-size:14px;
+}
+
+/* Form input styling */
+.input-box input,
+.input-box textarea,
+.input-box select,
+.input-box .form-control{
+    width:100% !important;
+    padding:12px 14px !important;
+    border:1px solid rgba(255,255,255,0.22) !important;
+    outline:none;
+    border-radius:12px !important;
+    background:rgba(255,255,255,0.09) !important;
+    color:#fff !important;
+    font-size:14px !important;
+    font-family:'Poppins', sans-serif !important;
+    transition:all 0.3s ease;
+    box-sizing:border-box;
+    display:block;
+}
+
+.input-box textarea,
+.input-box textarea.form-control{
+    min-height:75px;
+    resize:vertical;
+}
+
+.input-box input::placeholder,
+.input-box textarea::placeholder,
+.input-box .form-control::placeholder{
+    color:rgba(255,255,255,0.4) !important;
+    font-size:13px !important;
+}
+
+.input-box input:focus,
+.input-box textarea:focus,
+.input-box select:focus,
+.input-box .form-control:focus{
+    border-color:#00c6ff !important;
+    background:rgba(255,255,255,0.14) !important;
+    box-shadow:0 0 15px rgba(0,198,255,0.25) !important;
+}
+
+.field-error{
+    color:#ff6b6b;
+    font-size:12px;
+    margin-top:4px;
+    padding-left:4px;
+}
+
+/* Alert messages */
+.message-list{
+    margin-bottom:18px;
+}
+
+.message{
+    padding:10px 16px;
+    margin-bottom:10px;
+    border-radius:10px;
+    color:#fff;
+    font-size:13px;
+    text-align:center;
+}
+
+.message.success{
+    background:rgba(40,167,69,0.3);
+    border-left:3px solid #28a745;
+}
+
+.message.error{
+    background:rgba(220,53,69,0.3);
+    border-left:3px solid #dc3545;
+}
+
+.message.warning{
+    background:rgba(255,193,7,0.3);
+    border-left:3px solid #ffc107;
+}
+
+/* Buttons */
+.btn-row{
+    display:flex;
+    gap:14px;
+    margin-top:10px;
+}
+
+.form-btn{
+    flex:1;
+    padding:13px 20px;
+    border:none;
+    border-radius:12px;
+    cursor:pointer;
+    font-size:15px;
+    font-weight:600;
+    font-family:'Poppins', sans-serif;
+    transition:all 0.3s ease;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+}
+
+.submit-btn{
+    color:#fff;
+    background:linear-gradient(135deg, #007bff, #00c6ff);
+    box-shadow:0 4px 18px rgba(0,123,255,0.35);
+}
+
+.submit-btn:hover{
+    transform:translateY(-2px);
+    box-shadow:0 6px 24px rgba(0,123,255,0.5);
+}
+
+.reset-btn{
+    color:#ff6b6b;
+    background:transparent;
+    border:1px solid rgba(220,53,69,0.5);
+}
+
+.reset-btn:hover{
+    background:rgba(220,53,69,0.15);
+    border-color:#dc3545;
+}
+
+.login-text{
+    text-align:center;
+    margin-top:22px;
+    color:rgba(255,255,255,0.55);
+    font-size:13px;
+}
+
+.login-text a{
+    color:#00c6ff;
+    text-decoration:none;
+    font-weight:600;
+    margin-left:4px;
+}
+
+.login-text a:hover{
+    text-decoration:underline;
+}
+
+@media(max-width:680px){
+    .form-box{
+        padding:28px 20px;
+    }
+    .form-grid{
+        grid-template-columns:1fr;
+        gap:14px;
+    }
+    .btn-row{
+        flex-direction:column;
+    }
+}
+
+</style>
+
+<section class="register-section">
+
+    <div class="form-box">
+
+        <!-- Auth Switch Tabs -->
+        <div class="auth-switch">
+            <a href="{% url 'UserLogin' %}" class="switch-btn">
+                <span>👤</span> User Login
+            </a>
+            <a href="{% url 'UserRegister' %}" class="switch-btn active">
+                <span>📝</span> User Register
+            </a>
+        </div>
+
+        <div class="form-header">
+            <div class="form-icon">🌾</div>
+            <h2>Create New Account</h2>
+            <p class="subtitle">Register to access Smart Rural Classification features</p>
+        </div>
+
+        {% if messages %}
+            <div class="message-list">
+                {% for message in messages %}
+                    <div class="message {{ message.tags }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <form method="POST" action="{% url 'UserRegisterActions' %}" autocomplete="off">
+
+            {% csrf_token %}
+
+            <div class="form-grid">
+
+                <div class="input-box">
+                    <label><span>👤</span> Full Name</label>
+                    {{ form.Username }}
+                    {% if form.Username.errors %}
+                        <div class="field-error">{{ form.Username.errors.0 }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="input-box">
+                    <label><span>🆔</span> Login ID</label>
+                    {{ form.loginid }}
+                    {% if form.loginid.errors %}
+                        <div class="field-error">{{ form.loginid.errors.0 }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="input-box">
+                    <label><span>✉️</span> Email Address</label>
+                    {{ form.email }}
+                    {% if form.email.errors %}
+                        <div class="field-error">{{ form.email.errors.0 }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="input-box">
+                    <label><span>📱</span> Mobile Number</label>
+                    {{ form.mobile }}
+                    {% if form.mobile.errors %}
+                        <div class="field-error">{{ form.mobile.errors.0 }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="input-box">
+                    <label><span>🔒</span> Password</label>
+                    {{ form.password }}
+                    {% if form.password.errors %}
+                        <div class="field-error">{{ form.password.errors.0 }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="input-box">
+                    <label><span>📍</span> Village / Locality</label>
+                    {{ form.locality }}
+                    {% if form.locality.errors %}
+                        <div class="field-error">{{ form.locality.errors.0 }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="input-box">
+                    <label><span>🏙️</span> City / District</label>
+                    {{ form.city }}
+                    {% if form.city.errors %}
+                        <div class="field-error">{{ form.city.errors.0 }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="input-box">
+                    <label><span>🏛️</span> State</label>
+                    {{ form.state }}
+                    {% if form.state.errors %}
+                        <div class="field-error">{{ form.state.errors.0 }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="input-box full-width">
+                    <label><span>🏠</span> Residential Address</label>
+                    {{ form.address }}
+                    {% if form.address.errors %}
+                        <div class="field-error">{{ form.address.errors.0 }}</div>
+                    {% endif %}
+                </div>
+
+            </div>
+
+            {{ form.status.as_hidden }}
+
+            <div class="btn-row">
+                <button type="submit" class="form-btn submit-btn">
+                    <span>✨</span> Create Account
+                </button>
+                <button type="reset" class="form-btn reset-btn">
+                    <span>↺</span> Reset Form
+                </button>
+            </div>
+
+            <p class="login-text">
+                Already registered?
+                <a href="{% url 'UserLogin' %}">Switch to Login →</a>
+            </p>
+
+        </form>
+
+    </div>
+
+</section>
+
+{% endblock %}

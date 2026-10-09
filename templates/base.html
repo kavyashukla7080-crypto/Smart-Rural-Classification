@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        {% block title %}
+            Smart Rural Classification
+        {% endblock %}
+    </title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+        }
+
+        body{
+            font-family:'Poppins', sans-serif;
+            background:url("{% static 'imgs/ks.png' %}") no-repeat center center/cover;
+            background-attachment:fixed;
+            min-height:100vh;
+            display:flex;
+            flex-direction:column;
+            color:#fff;
+        }
+
+        /* Navigation */
+        nav{
+            width:100%;
+            position:sticky;
+            top:0;
+            background:rgba(0,0,0,0.6);
+            backdrop-filter:blur(15px);
+            -webkit-backdrop-filter:blur(15px);
+            padding:15px 40px;
+            z-index:1000;
+            border-bottom:1px solid rgba(255,255,255,0.1);
+        }
+
+        .nav-container{
+            max-width:1200px;
+            margin:auto;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+        }
+
+        .logo{
+            text-decoration:none;
+            font-size:22px;
+            font-weight:700;
+            color:#fff;
+            letter-spacing:0.5px;
+        }
+
+        .logo span{
+            color:#00c6ff;
+        }
+
+        nav ul{
+            list-style:none;
+            display:flex;
+            gap:8px;
+        }
+
+        nav ul li a{
+            text-decoration:none;
+            color:rgba(255,255,255,0.85);
+            padding:10px 20px;
+            border-radius:10px;
+            transition:all .3s ease;
+            font-size:14px;
+            font-weight:500;
+        }
+
+        nav ul li a:hover,
+        nav ul li a.active{
+            background:linear-gradient(135deg, #007bff, #00c6ff);
+            color:#fff;
+            box-shadow:0 4px 15px rgba(0,123,255,0.3);
+        }
+
+        /* Main */
+        main{
+            flex:1;
+            padding:30px;
+        }
+
+        /* Footer */
+        footer{
+            text-align:center;
+            padding:18px;
+            background:rgba(0,0,0,0.7);
+            backdrop-filter:blur(10px);
+            font-size:13px;
+            color:rgba(255,255,255,0.7);
+            border-top:1px solid rgba(255,255,255,0.1);
+        }
+
+        footer span{
+            color:#00c6ff;
+            font-weight:600;
+        }
+
+        /* Responsive */
+        @media(max-width:768px){
+
+            .nav-container{
+                flex-direction:column;
+                gap:15px;
+            }
+
+            nav ul{
+                flex-direction:column;
+                width:100%;
+                text-align:center;
+            }
+
+            nav ul li a{
+                display:block;
+            }
+        }
+
+    </style>
+
+    {% block extra_css %}
+    {% endblock %}
+
+</head>
+
+<body>
+
+<nav>
+    <div class="nav-container">
+
+        <a href="{% url 'index' %}" class="logo">
+            🌾 Smart <span>Rural</span> Classification
+        </a>
+
+        <ul>
+            {% block navbar_links %}
+            <li><a href="{% url 'index' %}" class="{% block home_active %}{% endblock %}">Home</a></li>
+            <li><a href="{% url 'UserLogin' %}" class="{% block user_login %}{% endblock %}">User Login</a></li>
+            <li><a href="{% url 'AdminLogin' %}" class="{% block admin_login %}{% endblock %}">Admin</a></li>
+            <li><a href="{% url 'UserRegister' %}" class="{% block register_active %}{% endblock %}">Register</a></li>
+            {% endblock %}
+        </ul>
+
+    </div>
+</nav>
+
+<main>
+    {% block content %}
+    {% endblock %}
+</main>
+
+<footer>
+    <p>&copy; <span>Smart Rural Classification</span>. All Rights Reserved.</p>
+</footer>
+
+</body>
+</html>

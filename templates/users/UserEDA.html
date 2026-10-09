@@ -1,0 +1,214 @@
+{% extends 'users/userbase.html' %}
+{% load static %}
+
+{% block title %}Exploratory Data Analysis - Smart Rural Intelligence{% endblock %}
+{% block nav_eda %}active{% endblock %}
+
+{% block extra_css %}
+<style>
+  .eda-header {
+    margin-bottom: 2rem;
+  }
+  .eda-header h1 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 0.4rem;
+  }
+  .eda-header p {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.95rem;
+  }
+
+  /* Summary Stat Cards */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.25rem;
+    margin-bottom: 2rem;
+  }
+  .stat-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    padding: 1.25rem 1.5rem;
+    backdrop-filter: blur(12px);
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    transition: all 0.3s ease;
+  }
+  .stat-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(0, 229, 255, 0.3);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  }
+  .stat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    flex-shrink: 0;
+  }
+  .icon-blue { background: rgba(0, 229, 255, 0.12); color: #00e5ff; }
+  .icon-purple { background: rgba(124, 77, 255, 0.12); color: #7c4dff; }
+  .icon-pink { background: rgba(255, 107, 139, 0.12); color: #ff6b8b; }
+  .icon-green { background: rgba(0, 230, 118, 0.12); color: #00e676; }
+
+  .stat-info .stat-value {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.2;
+  }
+  .stat-info .stat-label {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.55);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 0.2rem;
+  }
+
+  /* Visualization Cards */
+  .charts-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  .chart-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: 1.75rem;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    transition: border-color 0.3s ease;
+  }
+  .chart-card:hover {
+    border-color: rgba(0, 229, 255, 0.25);
+  }
+  .chart-card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.85rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+  .chart-card-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .chart-card-title i {
+    color: #00e5ff;
+  }
+  .chart-card-desc {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.88rem;
+    margin-top: 0.25rem;
+  }
+  .chart-img-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #0a1628;
+    border-radius: 12px;
+    padding: 1rem;
+    overflow: hidden;
+  }
+  .chart-img-wrapper img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    display: block;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="eda-header">
+  <h1><i class="fas fa-chart-line text-cyan-400 mr-2"></i>Exploratory Data Analysis</h1>
+  <p>Visual analytics and Statistical insights of the Rural Digital Transformation (RDT) Dataset</p>
+</div>
+
+{% if stats %}
+<!-- Summary Stats Cards -->
+<div class="stats-grid">
+  <div class="stat-card">
+    <div class="stat-icon icon-blue">
+      <i class="fas fa-database"></i>
+    </div>
+    <div class="stat-info">
+      <div class="stat-value">{{ stats.total_records }}</div>
+      <div class="stat-label">Total Observations</div>
+    </div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-icon icon-purple">
+      <i class="fas fa-list-check"></i>
+    </div>
+    <div class="stat-info">
+      <div class="stat-value">{{ stats.total_features }}</div>
+      <div class="stat-label">Indicator Features</div>
+    </div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-icon icon-pink">
+      <i class="fas fa-layer-group"></i>
+    </div>
+    <div class="stat-info">
+      <div class="stat-value">{{ stats.target_classes }}</div>
+      <div class="stat-label">Classification Classes</div>
+    </div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-icon icon-green">
+      <i class="fas fa-tags"></i>
+    </div>
+    <div class="stat-info">
+      <div class="stat-value" style="font-size: 1.1rem; padding-top: 0.2rem;">{{ stats.class_names }}</div>
+      <div class="stat-label">RDT Tiers</div>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+{% if charts %}
+<!-- Visualizations -->
+<div class="charts-grid">
+  {% for chart in charts %}
+  <div class="chart-card">
+    <div class="chart-card-header">
+      <div>
+        <div class="chart-card-title">
+          <i class="fas fa-chart-area"></i>
+          {{ chart.title }}
+        </div>
+        <div class="chart-card-desc">{{ chart.desc }}</div>
+      </div>
+    </div>
+    <div class="chart-img-wrapper">
+      <img src="data:image/png;base64,{{ chart.img }}" alt="{{ chart.title }}">
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<div class="chart-card text-center py-5">
+  <i class="fas fa-exclamation-triangle fa-3x text-amber-400 mb-3"></i>
+  <h4 class="text-white">Dataset Not Loaded</h4>
+  <p class="text-white/60">Could not generate EDA charts. Please check if the dataset file exists in media directory.</p>
+</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,294 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}User Login - Smart Rural Classification{% endblock %}
+{% block user_login %}active{% endblock %}
+
+{% block content %}
+
+<section class="login-section">
+  <div class="glass-box">
+
+    <!-- Auth Switch Tabs -->
+    <div class="auth-switch">
+      <a href="{% url 'UserLogin' %}" class="switch-btn active">
+        <span>👤</span> User Login
+      </a>
+      <a href="{% url 'UserRegister' %}" class="switch-btn">
+        <span>📝</span> User Register
+      </a>
+    </div>
+
+    <div class="form-header">
+      <div class="form-icon">🌾</div>
+      <h2>Welcome Back</h2>
+      <p class="subtitle">Access your dashboard and classification reports</p>
+    </div>
+
+    {% if messages %}
+      {% for message in messages %}
+        <div class="message-box {{ message.tags }}">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+
+    <form action="{% url 'UserLoginCheck' %}" method="POST" autocomplete="off">
+      {% csrf_token %}
+
+      <div class="form-group">
+        <label><span>🆔</span> Login ID</label>
+        <input type="text" name="loginid" placeholder="Enter your Login ID" required>
+      </div>
+
+      <div class="form-group">
+        <label><span>🔒</span> Password</label>
+        <input type="password" name="pswd" placeholder="Enter your password" required>
+      </div>
+
+      <div class="btn-group">
+        <button type="submit" class="btn-login">
+          <span>🚀</span> Login
+        </button>
+        <button type="reset" class="btn-reset">
+          <span>↺</span> Reset
+        </button>
+      </div>
+
+      <p class="small-text">
+        Don't have an account?
+        <a href="{% url 'UserRegister' %}">Switch to Register →</a>
+      </p>
+    </form>
+
+  </div>
+</section>
+
+<style>
+.login-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 85vh;
+  padding: 30px 15px;
+}
+
+.glass-box {
+  width: 100%;
+  max-width: 440px;
+  padding: 40px;
+
+  background: rgba(0, 0, 0, 0.82);
+  border-radius: 24px;
+
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.55);
+  animation: fadeInUp 0.5s ease-out;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Switch Tabs */
+.auth-switch {
+  display: flex;
+  background: rgba(255, 255, 255, 0.06);
+  padding: 5px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 25px;
+  gap: 6px;
+}
+
+.switch-btn {
+  flex: 1;
+  text-align: center;
+  padding: 10px 14px;
+  border-radius: 10px;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.7);
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.switch-btn:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.switch-btn.active {
+  background: linear-gradient(135deg, #007bff, #00c6ff);
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(0, 123, 255, 0.35);
+}
+
+.form-header {
+  text-align: center;
+  margin-bottom: 22px;
+}
+
+.form-icon {
+  font-size: 42px;
+  margin-bottom: 6px;
+}
+
+.glass-box h2 {
+  color: #fff;
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.glass-box .subtitle {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 14px;
+}
+
+.form-group {
+  margin-bottom: 18px;
+}
+
+.form-group label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 13px;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 13px 16px;
+
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  outline: none;
+
+  background: rgba(255, 255, 255, 0.09);
+  color: #fff;
+  font-size: 14px;
+  font-family: 'Poppins', sans-serif;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+.form-group input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.form-group input:focus {
+  border-color: #00c6ff;
+  background: rgba(255, 255, 255, 0.14);
+  box-shadow: 0 0 15px rgba(0, 198, 255, 0.25);
+}
+
+.btn-group {
+  display: flex;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.btn-login {
+  flex: 1;
+  padding: 13px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 15px;
+  font-family: 'Poppins', sans-serif;
+  transition: all .3s ease;
+  color: #fff;
+  background: linear-gradient(135deg, #007bff, #00c6ff);
+  box-shadow: 0 4px 18px rgba(0, 123, 255, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-login:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(0, 123, 255, 0.5);
+}
+
+.btn-reset {
+  flex: 1;
+  padding: 13px;
+  border-radius: 12px;
+  border: 1px solid rgba(220, 53, 69, 0.5);
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 15px;
+  font-family: 'Poppins', sans-serif;
+  transition: all .3s ease;
+  color: #ff6b6b;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-reset:hover {
+  background: rgba(220, 53, 69, 0.15);
+  border-color: #dc3545;
+}
+
+.message-box {
+  text-align: center;
+  color: #fff;
+  background: rgba(220, 53, 69, 0.3);
+  padding: 10px 15px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  border-left: 3px solid #dc3545;
+  font-size: 13px;
+}
+
+.message-box.success {
+  background: rgba(40, 167, 69, 0.3);
+  border-left: 3px solid #28a745;
+}
+
+.message-box.warning {
+  background: rgba(255, 193, 7, 0.3);
+  border-left: 3px solid #ffc107;
+}
+
+.small-text {
+  text-align: center;
+  margin-top: 22px;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.small-text a {
+  color: #00c6ff;
+  text-decoration: none;
+  font-weight: 600;
+  margin-left: 4px;
+}
+
+.small-text a:hover {
+  text-decoration: underline;
+}
+
+@media(max-width:480px){
+  .glass-box {
+    padding: 28px 20px;
+  }
+}
+
+</style>
+{% endblock %}

@@ -1,0 +1,232 @@
+{% extends 'admins/adminbase.html' %}
+{% block title %}User List - Smart Rural Classification{% endblock %}
+{% block users_active %}active{% endblock %}
+{% block content %}
+<style>
+  .user-container {
+    margin-top: 20px;
+    background: rgba(0, 0, 0, 0.75);
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    animation: fadeIn 0.5s ease-out;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .page-header {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+  .page-header h1 {
+    font-weight: 700;
+    color: #fff;
+    font-size: 28px;
+    margin-bottom: 10px;
+  }
+
+  .page-header p {
+    color: rgba(255,255,255,0.6);
+    font-size: 15px;
+  }
+
+  .table-card {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+  }
+
+  .table-header {
+    background: linear-gradient(135deg, #007bff, #00c6ff);
+    color: #fff;
+    padding: 14px;
+    font-size: 16px;
+    font-weight: 600;
+    text-align: center;
+    letter-spacing: 0.5px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    color: #fff;
+  }
+
+  thead {
+    background: rgba(0, 123, 255, 0.15);
+    color: #00c6ff;
+    text-transform: uppercase;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+  }
+
+  th, td {
+    text-align: center;
+    padding: 14px 12px;
+    font-size: 14px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  tbody tr {
+    transition: all 0.25s ease;
+  }
+
+  tbody tr:hover {
+    background: rgba(0, 198, 255, 0.08);
+  }
+
+  .badge {
+    font-weight: 600;
+    border-radius: 25px;
+    padding: 5px 14px;
+    font-size: 12px;
+    display: inline-block;
+  }
+
+  .bg-warning {
+    background: rgba(255, 193, 7, 0.25);
+    color: #ffc107;
+    border: 1px solid rgba(255,193,7,0.3);
+  }
+
+  .bg-success {
+    background: rgba(40, 167, 69, 0.25);
+    color: #28a745;
+    border: 1px solid rgba(40,167,69,0.3);
+  }
+
+  .action-btn {
+    border: none;
+    border-radius: 8px;
+    padding: 6px 14px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    font-size: 13px;
+    text-decoration: none;
+    display: inline-block;
+    margin: 2px;
+    cursor: pointer;
+  }
+
+  .action-btn-activate {
+    background: linear-gradient(135deg, #007bff, #00c6ff);
+    color: white;
+  }
+
+  .action-btn-activate:hover {
+    opacity: 0.85;
+    transform: translateY(-1px);
+  }
+
+  .action-btn-delete {
+    background: linear-gradient(135deg, #dc3545, #ff6b6b);
+    color: #fff;
+  }
+
+  .action-btn-delete:hover {
+    opacity: 0.85;
+    transform: translateY(-1px);
+  }
+
+  .text-activated {
+    color: #28a745;
+    font-weight: 600;
+    font-size: 13px;
+  }
+
+  .no-users {
+    color: rgba(255,255,255,0.5);
+    font-weight: 500;
+    text-align: center;
+    padding: 30px;
+    font-size: 15px;
+  }
+
+  .table-responsive {
+    overflow-x: auto;
+  }
+
+  @media (max-width: 768px) {
+    th, td {
+      padding: 10px 8px;
+      font-size: 12px;
+    }
+    .page-header h1 {
+      font-size: 22px;
+    }
+    .user-container {
+      padding: 20px 15px;
+    }
+  }
+</style>
+
+<div class="user-container">
+  <div class="page-header">
+    <h1>👥 User Management</h1>
+    <p>Manage, activate, or remove registered users securely.</p>
+  </div>
+
+  <div class="table-card">
+    <div class="table-header">Registered User Details</div>
+    <div class="table-responsive">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Login ID</th>
+            <th>Mobile</th>
+            <th>Email</th>
+            <th>Locality</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for user in data %}
+          <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ user.Username }}</td>
+            <td>{{ user.loginid }}</td>
+            <td>{{ user.mobile }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.locality }}</td>
+            <td>
+              {% if user.status == 'waiting' %}
+              <span class="badge bg-warning">Waiting</span>
+              {% else %}
+              <span class="badge bg-success">Activated</span>
+              {% endif %}
+            </td>
+            <td>
+              {% if user.status == 'waiting' %}
+              <a href="/AdminActivaUsers/?uid={{ user.id }}" class="action-btn action-btn-activate">Activate</a>
+              {% else %}
+              <span class="text-activated">✔ Active</span>
+              {% endif %}
+              <a href="/DeleteUsers/?uid={{ user.id }}"
+                onclick="return confirm('Are you sure you want to delete this user?');"
+                class="action-btn action-btn-delete">Delete</a>
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="8" class="no-users">No Users Found</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

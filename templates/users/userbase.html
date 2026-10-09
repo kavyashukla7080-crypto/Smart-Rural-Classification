@@ -1,0 +1,272 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Smart Rural Classification - User Dashboard{% endblock %}</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: url("{% static 'imgs/ks.png' %}") no-repeat center center / cover;
+      background-attachment: fixed;
+      min-height: 100vh;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(circle at 50% 20%, rgba(10, 25, 45, 0.75), rgba(5, 12, 22, 0.92));
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* Top Navbar */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      padding: 14px 30px;
+    }
+
+    .nav-wrapper {
+      max-width: 1300px;
+      margin: 0 auto;
+      background: rgba(13, 22, 38, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 18px;
+      padding: 10px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: #fff;
+      font-weight: 700;
+      font-size: 19px;
+      letter-spacing: 0.5px;
+    }
+
+    .brand-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, rgba(0, 229, 255, 0.2), rgba(0, 150, 255, 0.3));
+      border: 1px solid rgba(0, 229, 255, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      box-shadow: 0 0 15px rgba(0, 229, 255, 0.3);
+    }
+
+    .brand-text span {
+      color: #00e5ff;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      list-style: none;
+    }
+
+    .nav-item a {
+      text-decoration: none;
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      padding: 9px 18px;
+      border-radius: 12px;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-transform: uppercase;
+    }
+
+    .nav-item a:hover {
+      color: #00e5ff;
+      background: rgba(0, 229, 255, 0.08);
+    }
+
+    /* Active Nav Tab */
+    .nav-item a.active {
+      background: rgba(0, 229, 255, 0.16);
+      border: 1px solid rgba(0, 229, 255, 0.45);
+      color: #00e5ff;
+      box-shadow: 0 0 18px rgba(0, 229, 255, 0.25);
+    }
+
+    /* Logout Pill */
+    .logout-item a {
+      color: #ff6b8b !important;
+      border: 1px solid rgba(255, 107, 139, 0.35);
+      background: rgba(255, 107, 139, 0.08);
+      padding: 8px 18px;
+    }
+
+    .logout-item a:hover {
+      background: rgba(255, 107, 139, 0.2);
+      border-color: #ff6b8b;
+      box-shadow: 0 0 15px rgba(255, 107, 139, 0.3);
+    }
+
+    /* Main Container */
+    main {
+      flex: 1;
+      max-width: 1300px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 10px 30px 40px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Floating Welcome Pill Banner */
+    .welcome-pill-banner {
+      background: rgba(0, 229, 255, 0.1);
+      border: 1px solid rgba(0, 229, 255, 0.25);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      border-radius: 50px;
+      padding: 10px 22px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: #e0f7fa;
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 22px;
+      box-shadow: 0 4px 20px rgba(0, 229, 255, 0.12);
+      animation: fadeInDown 0.4s ease-out;
+    }
+
+    .welcome-pill-banner .info-icon {
+      color: #00e5ff;
+      font-size: 16px;
+    }
+
+    .welcome-pill-banner strong {
+      color: #00e5ff;
+      font-weight: 600;
+    }
+
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 18px 20px;
+      background: rgba(10, 18, 30, 0.7);
+      backdrop-filter: blur(10px);
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.55);
+      position: relative;
+      z-index: 1;
+    }
+
+    footer span {
+      color: #00e5ff;
+      font-weight: 600;
+    }
+
+    @media (max-width: 992px) {
+      .nav-wrapper {
+        flex-direction: column;
+        gap: 15px;
+      }
+      .nav-links {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+    }
+  </style>
+
+  {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+  <header>
+    <div class="nav-wrapper">
+      <a href="{% url 'UserHome' %}" class="brand-logo">
+        <div class="brand-icon">🌾</div>
+        <div class="brand-text">Smart <span>Rural</span> Classification</div>
+      </a>
+
+      <ul class="nav-links">
+        <li class="nav-item">
+          <a href="{% url 'UserHome' %}" class="{% block nav_home %}{% endblock %}">
+            <span>🏠</span> Home
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="{% url 'UserDataset' %}" class="{% block nav_dataset %}{% endblock %}">
+            <span>🗄</span> DATASET
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="{% url 'UserTraining' %}" class="{% block nav_training %}{% endblock %}">
+            <span>🧠</span> TRAINING
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="{% url 'UserPrediction' %}" class="{% block nav_prediction %}{% endblock %}">
+            <span>🧭</span> PREDICTION
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="{% url 'UserEDA' %}" class="{% block nav_eda %}{% endblock %}">
+            <span>📊</span> EDA
+          </a>
+        </li>
+        <li class="nav-item logout-item">
+          <a href="{% url 'UserLogout' %}">
+            <span>🚪</span> Logout
+          </a>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer>
+    <p>&copy; <span>Smart Rural Classification</span> Intelligence Portal. All Rights Reserved.</p>
+  </footer>
+
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

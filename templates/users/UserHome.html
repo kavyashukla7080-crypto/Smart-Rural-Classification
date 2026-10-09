@@ -1,0 +1,353 @@
+{% extends 'users/userbase.html' %}
+{% load static %}
+
+{% block title %}User Dashboard - Smart Rural Intelligence{% endblock %}
+{% block nav_home %}active{% endblock %}
+
+{% block extra_css %}
+<style>
+  /* Floating Welcome Pill Banner matching screenshot */
+  .welcome-banner-wrapper {
+    margin-bottom: 24px;
+  }
+
+  .welcome-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(0, 229, 255, 0.12);
+    border: 1px solid rgba(0, 229, 255, 0.28);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-radius: 50px;
+    padding: 10px 24px;
+    color: #e0f7fa;
+    font-size: 14px;
+    box-shadow: 0 4px 20px rgba(0, 229, 255, 0.12);
+    animation: fadeInDown 0.5s ease-out;
+  }
+
+  .welcome-pill .info-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #00e5ff;
+    color: #06101e;
+    font-size: 12px;
+    font-weight: 800;
+  }
+
+  /* Hero Section Card matching screenshot */
+  .hero-card {
+    background: rgba(13, 22, 38, 0.88);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 28px;
+    padding: 48px 50px;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
+    margin-bottom: 35px;
+    position: relative;
+    overflow: hidden;
+    animation: fadeInUp 0.6s ease-out;
+  }
+
+  .hero-card::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 450px;
+    height: 450px;
+    background: radial-gradient(circle, rgba(0, 229, 255, 0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  /* Badge pill */
+  .system-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(0, 229, 255, 0.1);
+    border: 1px solid rgba(0, 229, 255, 0.35);
+    border-radius: 50px;
+    padding: 7px 18px;
+    color: #00e5ff;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 22px;
+    letter-spacing: 0.3px;
+  }
+
+  .hero-card h1 {
+    font-size: 38px;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 18px;
+    line-height: 1.25;
+  }
+
+  .hero-card h1 .highlight-text {
+    background: linear-gradient(135deg, #00e5ff, #0099ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-card p {
+    font-size: 15px;
+    line-height: 1.8;
+    color: rgba(255, 255, 255, 0.72);
+    max-width: 780px;
+    margin-bottom: 32px;
+  }
+
+  /* Hero Action Buttons */
+  .hero-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .btn-hero {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 13px 28px;
+    border-radius: 14px;
+    font-size: 15px;
+    font-weight: 700;
+    font-family: 'Poppins', sans-serif;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+
+  .btn-cyan {
+    background: linear-gradient(135deg, #00e5ff, #00b4d8);
+    color: #041220;
+    border: none;
+    box-shadow: 0 6px 25px rgba(0, 229, 255, 0.4);
+  }
+
+  .btn-cyan:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(0, 229, 255, 0.6);
+    background: linear-gradient(135deg, #33ebff, #00c6ff);
+  }
+
+  .btn-dark {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    color: #fff;
+  }
+
+  .btn-dark:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: #00e5ff;
+    color: #00e5ff;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 229, 255, 0.15);
+  }
+
+  /* Bottom Feature Grid Cards */
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 22px;
+  }
+
+  .feature-card {
+    background: rgba(13, 22, 38, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 28px 24px;
+    transition: all 0.35s ease;
+    text-decoration: none;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, #00e5ff, transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .feature-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(0, 229, 255, 0.35);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.45);
+  }
+
+  .feature-card:hover::before {
+    opacity: 1;
+  }
+
+  .feature-icon-wrapper {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    background: rgba(0, 229, 255, 0.1);
+    border: 1px solid rgba(0, 229, 255, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    margin-bottom: 18px;
+    transition: all 0.3s ease;
+  }
+
+  .feature-card:hover .feature-icon-wrapper {
+    background: rgba(0, 229, 255, 0.2);
+    box-shadow: 0 0 20px rgba(0, 229, 255, 0.3);
+  }
+
+  .feature-card h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 8px;
+    letter-spacing: 0.3px;
+  }
+
+  .feature-card p {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.6);
+    line-height: 1.6;
+    margin-bottom: 18px;
+    flex: 1;
+  }
+
+  .feature-link {
+    font-size: 13px;
+    font-weight: 600;
+    color: #00e5ff;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .feature-card:hover .feature-link {
+    text-decoration: underline;
+  }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(25px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-15px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 768px) {
+    .hero-card {
+      padding: 30px 22px;
+    }
+    .hero-card h1 {
+      font-size: 28px;
+    }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+
+  <!-- Floating Welcome Pill matching screenshot -->
+  <div class="welcome-banner-wrapper">
+    <div class="welcome-pill">
+      <span class="info-icon">i</span>
+      <span>Welcome, <strong>{{ request.session.loggeduser|default:'Guest' }}</strong>!</span>
+    </div>
+  </div>
+
+  <!-- Hero Card matching screenshot -->
+  <div class="hero-card">
+
+    <div class="system-badge">
+      <span>🌾</span> AI Rural Analytics & Classification System
+    </div>
+
+    <h1>
+      Welcome to <span class="highlight-text">Smart Rural Intelligence</span>
+    </h1>
+
+    <p>
+      Empowering rural development and policymakers with machine-learning-driven digital transformation assessment, dynamic infrastructure indexing, and real-time classification scores trained on nationwide rural socioeconomic metrics.
+    </p>
+
+    <div class="hero-actions">
+      <a href="{% url 'UserPrediction' %}" class="btn-hero btn-cyan">
+        <span>🧭</span> Start Rural Prediction
+      </a>
+      <a href="{% url 'UserTraining' %}" class="btn-hero btn-dark">
+        <span>🧠</span> Train Model Engine
+      </a>
+    </div>
+
+  </div>
+
+  <!-- Bottom Feature Navigation Cards -->
+  <div class="feature-grid">
+
+    <!-- Dataset Card -->
+    <a href="{% url 'UserDataset' %}" class="feature-card">
+      <div>
+        <div class="feature-icon-wrapper">🗄</div>
+        <h3>Dataset Explorer</h3>
+        <p>Explore 1,753 county records across 22 digital transformation indicators and infrastructure features.</p>
+      </div>
+      <div class="feature-link">View Dataset →</div>
+    </a>
+
+    <!-- Training Card -->
+    <a href="{% url 'UserTraining' %}" class="feature-card">
+      <div>
+        <div class="feature-icon-wrapper">🧠</div>
+        <h3>Model Training</h3>
+        <p>Train and benchmark Random Forest, Decision Tree, SVM, and Logistic Regression algorithms.</p>
+      </div>
+      <div class="feature-link">Train Engine →</div>
+    </a>
+
+    <!-- Prediction Card -->
+    <a href="{% url 'UserPrediction' %}" class="feature-card">
+      <div>
+        <div class="feature-icon-wrapper">🧭</div>
+        <h3>Rural Prediction</h3>
+        <p>Input county metrics to predict Rural Digital Transformation level (Beginner, Developing, Mature, Advanced).</p>
+      </div>
+      <div class="feature-link">Start Prediction →</div>
+    </a>
+
+    <!-- EDA Card -->
+    <a href="{% url 'UserEDA' %}" class="feature-card">
+      <div>
+        <div class="feature-icon-wrapper">📊</div>
+        <h3>EDA Analytics</h3>
+        <p>Interactive exploratory data analysis, class balance insights, and key development drivers.</p>
+      </div>
+      <div class="feature-link">Explore EDA →</div>
+    </a>
+
+  </div>
+
+{% endblock %}

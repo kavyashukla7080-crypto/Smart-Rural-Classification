@@ -1,0 +1,191 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Home - Smart Rural Classification
+{% endblock %}
+{% block home_active %}active{% endblock %}
+
+{% block content %}
+
+<div class="hero-section">
+
+    <div class="hero-card">
+
+        <div class="hero-icon">🌾</div>
+        <h1>Smart Rural Classification</h1>
+        <p>Empowering rural development through intelligent data-driven classification and analysis of rural areas using advanced machine learning techniques.</p>
+
+        <div class="hero-buttons">
+            <a href="{% url 'UserLogin' %}" class="btn btn-primary">Get Started</a>
+            <a href="{% url 'UserRegister' %}" class="btn btn-outline">Create Account</a>
+        </div>
+
+        <div class="hero-features">
+            <div class="feature">
+                <div class="feature-icon">📊</div>
+                <span>Data Analysis</span>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">🤖</div>
+                <span>ML Powered</span>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">🏘️</div>
+                <span>Rural Insights</span>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<style>
+
+.hero-section{
+    min-height:85vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+}
+
+.hero-card{
+    width:750px;
+    background:rgba(0,0,0,0.75);
+    backdrop-filter:blur(20px);
+    -webkit-backdrop-filter:blur(20px);
+    border-radius:24px;
+    padding:50px 45px;
+    text-align:center;
+    color:white;
+    border:1px solid rgba(255,255,255,0.12);
+    box-shadow:0 15px 50px rgba(0,0,0,.5);
+    animation:slideUp 0.6s ease-out;
+}
+
+@keyframes slideUp{
+    from{ opacity:0; transform:translateY(30px); }
+    to{ opacity:1; transform:translateY(0); }
+}
+
+.hero-icon{
+    font-size:55px;
+    margin-bottom:15px;
+}
+
+.hero-card h1{
+    font-size:36px;
+    margin-bottom:18px;
+    font-weight:700;
+    background:linear-gradient(135deg, #fff, #00c6ff);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    background-clip:text;
+}
+
+.hero-card p{
+    font-size:16px;
+    line-height:1.8;
+    margin-bottom:30px;
+    color:rgba(255,255,255,0.8);
+    max-width:550px;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+.hero-buttons{
+    display:flex;
+    gap:15px;
+    justify-content:center;
+    margin-bottom:35px;
+}
+
+.btn{
+    display:inline-block;
+    padding:13px 32px;
+    text-decoration:none;
+    border-radius:12px;
+    transition:all .3s ease;
+    font-size:16px;
+    font-weight:600;
+    cursor:pointer;
+}
+
+.btn-primary{
+    color:#fff;
+    background:linear-gradient(135deg, #007bff, #00c6ff);
+    box-shadow:0 5px 20px rgba(0,123,255,0.35);
+}
+
+.btn-primary:hover{
+    transform:translateY(-2px);
+    box-shadow:0 8px 25px rgba(0,123,255,0.5);
+}
+
+.btn-outline{
+    color:#00c6ff;
+    background:transparent;
+    border:2px solid rgba(0,198,255,0.5);
+}
+
+.btn-outline:hover{
+    background:rgba(0,198,255,0.1);
+    border-color:#00c6ff;
+    transform:translateY(-2px);
+}
+
+.hero-features{
+    display:flex;
+    justify-content:center;
+    gap:40px;
+    padding-top:25px;
+    border-top:1px solid rgba(255,255,255,0.1);
+}
+
+.feature{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:8px;
+}
+
+.feature-icon{
+    font-size:28px;
+}
+
+.feature span{
+    font-size:13px;
+    color:rgba(255,255,255,0.7);
+    font-weight:500;
+}
+
+@media(max-width:768px){
+
+    .hero-card{
+        width:100%;
+        padding:35px 25px;
+    }
+
+    .hero-card h1{
+        font-size:26px;
+    }
+
+    .hero-card p{
+        font-size:14px;
+    }
+
+    .hero-buttons{
+        flex-direction:column;
+        gap:10px;
+    }
+
+    .hero-features{
+        gap:20px;
+    }
+
+}
+
+</style>
+
+{% endblock %}
